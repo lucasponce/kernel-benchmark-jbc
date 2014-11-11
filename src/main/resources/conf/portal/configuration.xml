@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+
+    Copyright (C) 2009 eXo Platform SAS.
+
+    This is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Lesser General Public License as
+    published by the Free Software Foundation; either version 2.1 of
+    the License, or (at your option) any later version.
+
+    This software is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+    Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public
+    License along with this software; if not, write to the Free
+    Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+    02110-1301 USA, or see the FSF site: http://www.fsf.org.
+
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd http://www.exoplatform.org/xml/ns/kernel_1_2.xsd"
+   xmlns="http://www.exoplatform.org/xml/ns/kernel_1_2.xsd">
+  
+  <component>
+    <key>org.exoplatform.services.cache.CacheService</key>
+    <type>org.exoplatform.services.cache.impl.CacheServiceImpl</type>
+  	<init-params>
+      <object-param>
+        <name>cache.config.default</name>
+        <description>The default cache configuration</description>
+        <object type="org.exoplatform.services.cache.impl.infinispan.generic.GenericExoCacheConfig">
+          <field name="name"><string>BenchMarkCache</string></field>
+          <field name="strategy"><string>LIRS</string></field>
+          <field name="maxEntries"><int>${gatein.cache.mop.maxnodes:5000}</int></field>
+          <field name="lifespan"><long>${gatein.cache.mop.expiration:-1}</long></field>
+          <field name="maxIdle"><long>${gatein.cache.mop.maxidle:600000}</long></field>
+          <field name="replicated"><boolean>true</boolean></field>
+        </object>
+      </object-param>
+    </init-params>
+  </component>
+
+  <component>
+    <key>org.exoplatform.services.cache.ExoCacheFactory</key>
+    <type>org.exoplatform.services.cache.impl.infinispan.ExoCacheFactoryImpl</type>
+    <init-params>
+      <value-param>
+        <name>cache.config.template</name>
+        <value>jar:/conf/portal/infinispan-configuration.xml</value>
+      </value-param>
+    </init-params>
+  </component>
+    
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cache.ExoCacheFactory</target-component>
+    <component-plugin>
+      <name>addCreator</name>
+      <set-method>addCreator</set-method>
+      <type>org.exoplatform.services.cache.impl.infinispan.ExoCacheCreatorPlugin</type>
+      <description>add Exo Cache Creator</description>
+      <init-params>
+	      <object-param>
+		        <name>GENERIC</name>
+		        <description>The generic cache creator</description>
+		        <object type="org.exoplatform.services.cache.impl.infinispan.generic.GenericExoCacheCreator">
+		        	<field name="implementations">
+	                  <collection type="java.util.HashSet">
+	                     <value>
+	                        <string>NONE</string>
+	                     </value>
+	                     <value>
+	                        <string>FIFO</string>
+	                     </value>
+	                     <value>
+	                        <string>LRU</string>
+	                     </value>
+	                     <value>
+	                        <string>UNORDERED</string>
+	                     </value>
+	                     <value>
+	                        <string>LIRS</string>
+	                     </value>
+	                  </collection>		        	
+		        	</field>
+		        	<field name="defaultStrategy"><string>LRU</string></field>
+		        	<field name="defaultMaxIdle"><long>-1</long></field>
+		        	<field name="defaultWakeUpInterval"><long>500</long></field>	
+		        </object>
+		    </object-param>  		    		          
+      </init-params>	
+    </component-plugin>
+  </external-component-plugins>  
+</configuration>

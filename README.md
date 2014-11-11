@@ -1,2 +1,2 @@
-kernel-benchmark-jbc
-====================
+kernel-benchmark-ispn
+=====================
