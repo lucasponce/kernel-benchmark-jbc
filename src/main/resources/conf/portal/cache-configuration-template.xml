@@ -1,7 +1,7 @@
 <jbosscache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:jboss:jbosscache-core:config:3.1">
 
   <!-- The cluster name should be changed by the kernel cache configuration -->
-  <clustering mode="replication" clusterName="BenchMark-Cache">
+  <clustering mode="replication">
     <jgroupsConfig configFile="jgroups-configuration.xml"/>
   </clustering>
 
