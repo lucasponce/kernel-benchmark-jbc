@@ -86,11 +86,19 @@ public class HttpThread extends Thread {
         for (int i = 0; i < pageSize; i++) {
             sb.append(new Integer(pageSize).toString().charAt(0));
         }
-        cache.put(dummyKey, sb.toString());
+        try {
+            cache.put(dummyKey, sb.toString());
+        } catch (Exception e) {
+            LOG.error("Error on createPage(): " + e.getMessage(), e);
+        }
     }
 
     public void readPage() {
         MyKey dummyKey = new MyKey("DummyKey");
-        cache.get(dummyKey);
+        try {
+            cache.get(dummyKey);
+        } catch (Exception e) {
+            LOG.error("Error on readPage(): " + e.getMessage(), e);
+        }
     }
 }
