@@ -37,18 +37,20 @@ public class HttpThread extends Thread {
     final String name;
     final CountDownLatch startSignal;
     final CountDownLatch doneSignal;
-    final int requestForWritting = 5;
+    final int requestForWritting;
     final int pageSize = 1024 * 10;
 
     public HttpThread(CountDownLatch startSignal,
                       CountDownLatch doneSignal,
                       AbstractExoCache<Serializable, Object> cache,
                       int numRequests,
+                      int requestForWritting,
                       String name) {
         super(name);
         this.name = name;
         this.cache = cache;
         this.numRequests = numRequests;
+        this.requestForWritting = requestForWritting;
         this.startSignal = startSignal;
         this.doneSignal = doneSignal;
     }
