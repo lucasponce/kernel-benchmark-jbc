@@ -80,7 +80,7 @@ public class BenchMark {
         int nWriteRequestsPerThread = 5;
         boolean finish = false;
 
-        if (args.length == 5) {
+        if (args.length == 6) {
             node = args[0];
             clusterSize = new Integer(args[1]);
             nThreads = new Integer(args[2]);
