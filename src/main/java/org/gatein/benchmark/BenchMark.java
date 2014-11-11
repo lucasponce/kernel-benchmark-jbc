@@ -67,6 +67,7 @@ public class BenchMark {
      * - Node name of the cluster
      * - Expected cluster size, test will be waiting for other nodes to join into cluster
      * - Number of threads writing/reading to/from cache
+     * - Number of requests to be executed by thread
      * - true/false flag to exit process after finish
      */
     public static void main(String[] args) throws Exception {
