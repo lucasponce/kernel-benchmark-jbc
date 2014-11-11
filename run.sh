@@ -6,5 +6,5 @@ fi
 
 JGROUPS_BIND_ADDR="127.0.0.1"
 
-JAVA_OPTS="-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=${JGROUPS_BIND_ADDR}"
+JAVA_OPTS="-Xmx2g -Xms2g -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=${JGROUPS_BIND_ADDR}"
 java $JAVA_OPTS -cp "target/*:target/dependency/*" "org.gatein.benchmark.BenchMark" ${@}

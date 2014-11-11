@@ -68,7 +68,6 @@ public class BenchMark {
      * - Expected cluster size, test will be waiting for other nodes to join into cluster
      * - Number of threads writing/reading to/from cache
      * - Number of requests to be executed by thread
-     * - Number of writting request per thread
      * - true/false flag to exit process after finish
      */
     public static void main(String[] args) throws Exception {
@@ -77,16 +76,14 @@ public class BenchMark {
         int clusterSize = 1;
         int nThreads = 10;
         int nRequestPerThread = 10;
-        int nWriteRequestsPerThread = 5;
         boolean finish = false;
 
-        if (args.length == 6) {
+        if (args.length == 5) {
             node = args[0];
             clusterSize = new Integer(args[1]);
             nThreads = new Integer(args[2]);
             nRequestPerThread = new Integer(args[3]);
-            nWriteRequestsPerThread = new Integer(args[4]);
-            finish = new Boolean(args[5]);
+            finish = new Boolean(args[4]);
         }
 
         LOG.info("-> Test using " + nThreads + " threads and " + nRequestPerThread + " request/thread");
@@ -98,7 +95,7 @@ public class BenchMark {
         CountDownLatch doneSignal = new CountDownLatch(nThreads);
 
         for (int i = 0; i < nThreads; i++) {
-            new HttpThread(startSignal, doneSignal, cache, nRequestPerThread, nWriteRequestsPerThread, "HttpThread-" + i).start();
+            new HttpThread(startSignal, doneSignal, cache, nRequestPerThread, "HttpThread-" + i).start();
         }
 
         long start = System.currentTimeMillis();
