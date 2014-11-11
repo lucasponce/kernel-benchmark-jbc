@@ -62,6 +62,13 @@ public class BenchMark {
         }
     }
 
+    /**
+     * Expected arguments:
+     * - Node name of the cluster
+     * - Expected cluster size, test will be waiting for other nodes to join into cluster
+     * - Number of threads writing/reading to/from cache
+     * - true/false flag to exit process after finish
+     */
     public static void main(String[] args) throws Exception {
 
         String node = "single";
