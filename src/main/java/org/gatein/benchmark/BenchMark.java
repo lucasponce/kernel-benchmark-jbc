@@ -22,11 +22,10 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Logger;
 
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.services.cache.CacheService;
-import org.exoplatform.services.cache.impl.infinispan.AbstractExoCache;
+import org.exoplatform.services.cache.impl.jboss.AbstractExoCache;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 
@@ -41,7 +40,7 @@ public class BenchMark {
     static AbstractExoCache<Serializable, Object> cache;
 
     public static void initCache() throws Exception {
-        service = PortalContainer.getInstance().getComponentInstanceOfType(CacheService.class);
+        service = (CacheService)PortalContainer.getInstance().getComponentInstanceOfType(CacheService.class);
         cache = (AbstractExoCache<Serializable, Object>)service.getCacheInstance("BenchMarkCache");
     }
 

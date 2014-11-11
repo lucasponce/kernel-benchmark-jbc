@@ -21,7 +21,7 @@ package org.gatein.benchmark;
 import java.io.Serializable;
 import java.util.concurrent.CountDownLatch;
 
-import org.exoplatform.services.cache.impl.infinispan.AbstractExoCache;
+import org.exoplatform.services.cache.impl.jboss.AbstractExoCache;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.log.Log;
 

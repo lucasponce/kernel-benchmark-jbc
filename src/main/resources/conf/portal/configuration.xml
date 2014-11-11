@@ -29,13 +29,19 @@
       <object-param>
         <name>cache.config.default</name>
         <description>The default cache configuration</description>
-        <object type="org.exoplatform.services.cache.impl.infinispan.generic.GenericExoCacheConfig">
-          <field name="name"><string>BenchMarkCache</string></field>
-          <field name="strategy"><string>LIRS</string></field>
-          <field name="maxEntries"><int>${gatein.cache.mop.maxnodes:5000}</int></field>
-          <field name="lifespan"><long>${gatein.cache.mop.expiration:-1}</long></field>
-          <field name="maxIdle"><long>${gatein.cache.mop.maxidle:600000}</long></field>
-          <field name="replicated"><boolean>true</boolean></field>
+        <object type="org.exoplatform.services.cache.impl.jboss.ea.EAExoCacheConfig">
+          <field name="name">
+            <string>BenchMarkCache</string>
+          </field>
+          <field name="expirationTimeout">
+            <long>${gatein.cache.mop.expiration:600000}</long>
+          </field>
+          <field name="maxNodes">
+            <int>${gatein.cache.mop.maxnodes:5000}</int>
+          </field>
+          <field name="distributed">
+            <boolean>true</boolean>
+          </field>
         </object>
       </object-param>
     </init-params>
@@ -43,11 +49,11 @@
 
   <component>
     <key>org.exoplatform.services.cache.ExoCacheFactory</key>
-    <type>org.exoplatform.services.cache.impl.infinispan.ExoCacheFactoryImpl</type>
+    <type>org.exoplatform.services.cache.impl.jboss.ExoCacheFactoryImpl</type>
     <init-params>
       <value-param>
         <name>cache.config.template</name>
-        <value>jar:/conf/portal/infinispan-configuration.xml</value>
+        <value>jar:/conf/portal/cache-configuration-template.xml</value>
       </value-param>
     </init-params>
   </component>
@@ -57,38 +63,30 @@
     <component-plugin>
       <name>addCreator</name>
       <set-method>addCreator</set-method>
-      <type>org.exoplatform.services.cache.impl.infinispan.ExoCacheCreatorPlugin</type>
+      <type>org.exoplatform.services.cache.impl.jboss.ExoCacheCreatorPlugin</type>
       <description>add Exo Cache Creator</description>
       <init-params>
-	      <object-param>
-		        <name>GENERIC</name>
-		        <description>The generic cache creator</description>
-		        <object type="org.exoplatform.services.cache.impl.infinispan.generic.GenericExoCacheCreator">
-		        	<field name="implementations">
-	                  <collection type="java.util.HashSet">
-	                     <value>
-	                        <string>NONE</string>
-	                     </value>
-	                     <value>
-	                        <string>FIFO</string>
-	                     </value>
-	                     <value>
-	                        <string>LRU</string>
-	                     </value>
-	                     <value>
-	                        <string>UNORDERED</string>
-	                     </value>
-	                     <value>
-	                        <string>LIRS</string>
-	                     </value>
-	                  </collection>		        	
-		        	</field>
-		        	<field name="defaultStrategy"><string>LRU</string></field>
-		        	<field name="defaultMaxIdle"><long>-1</long></field>
-		        	<field name="defaultWakeUpInterval"><long>500</long></field>	
-		        </object>
-		    </object-param>  		    		          
-      </init-params>	
+        <object-param>
+          <name>FIFO</name>
+          <description>The fifo cache creator</description>
+          <object type="org.exoplatform.services.cache.impl.jboss.fifo.FIFOExoCacheCreator"></object>
+        </object-param>
+        <object-param>
+          <name>LRU</name>
+          <description>The lru cache creator</description>
+          <object type="org.exoplatform.services.cache.impl.jboss.lru.LRUExoCacheCreator">
+            <field name="defaultTimeToLive"><long>1500</long></field>
+            <field name="defaultMaxAge"><long>2000</long></field>
+          </object>
+        </object-param>
+        <object-param>
+          <name>EA</name>
+          <description>The ea cache creator</description>
+          <object type="org.exoplatform.services.cache.impl.jboss.ea.EAExoCacheCreator">
+            <field name="defaultExpirationTimeout"><long>2000</long></field>
+          </object>
+        </object-param>
+      </init-params>
     </component-plugin>
   </external-component-plugins>  
 </configuration>
